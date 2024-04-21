@@ -59,6 +59,7 @@ public class ProductService {
         
         
         applyChange(changeMap);
+        incrementMoneyTypes(session.getMoneyInserted());
         
         
         session.setTotalAmount(0); // Reset the session balance as it is closed now
@@ -68,6 +69,24 @@ public class ProductService {
         repository.save(product);
 
         return new PurchaseResult(product, changeMap);
+    }
+    
+    private void incrementMoneyTypes(Map<Integer, Integer> moneyInserted) {
+        for (Map.Entry<Integer, Integer> entry : moneyInserted.entrySet()) {
+            Optional<MoneyType> optionalMoneyType = moneyTypeRepository.findByDenomination(entry.getKey());
+            if (optionalMoneyType.isPresent()) {
+                MoneyType mt = optionalMoneyType.get();
+                mt.setQuantity(mt.getQuantity() + entry.getValue());
+                moneyTypeRepository.save(mt);
+            } else {
+                // Handle the case where no MoneyType is found for the given denomination
+                // Create a new record if it does not exist
+                MoneyType newMoneyType = new MoneyType();
+                newMoneyType.setDenomination(entry.getKey());
+                newMoneyType.setQuantity(entry.getValue());
+                moneyTypeRepository.save(newMoneyType);
+            }
+        }
     }
     
     private Map<Integer, Integer> simulateChange(int change) {
