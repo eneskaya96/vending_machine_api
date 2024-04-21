@@ -6,7 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.vendingmachine.domain.Product;
 import com.vendingmachine.domain.TransactionSession;
+import com.vendingmachine.dto.ProductIdDTO;
+import com.vendingmachine.dto.PurchaseResult;
+import com.vendingmachine.service.ProductService;
 import com.vendingmachine.service.TransactionSessionService;
 
 @RestController
@@ -15,6 +19,9 @@ public class TransactionSessionController {
 
     @Autowired
     private TransactionSessionService sessionService;
+    
+    @Autowired
+    private ProductService productService;
 
     @PostMapping("/start")
     public ResponseEntity<ApiResponse<TransactionSession>> startSession() {
@@ -48,5 +55,16 @@ public class TransactionSessionController {
         session = sessionService.refundMoney(session);
         ApiResponse<TransactionSession> response = new ApiResponse<>(session, 200, "Refund processed successfully", true);
         return ResponseEntity.ok(response);
+    }
+    
+    @PostMapping("/{sessionId}/purchase-product")
+    public ResponseEntity<ApiResponse<PurchaseResult>> purchaseProduct(@PathVariable Long sessionId, @RequestBody ProductIdDTO productIdDTO) {
+        try {
+            Long productId = productIdDTO.getProductId();
+            PurchaseResult result = productService.purchaseProduct(sessionId, productId);
+            return ResponseEntity.ok(new ApiResponse<>(result, 200, "Product purchased and change returned successfully", true));
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(new ApiResponse<>(null, 400, e.getMessage(), false));
+        }
     }
 }

@@ -13,7 +13,7 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
     private String name;
-    private Double price;
+    private Integer price;
     private Integer quantity;
 
     // Getter ve Setter metodları
@@ -33,11 +33,11 @@ public class Product {
         this.name = name;
     }
 
-    public Double getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
