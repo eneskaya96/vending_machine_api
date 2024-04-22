@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.vendingmachine.domain.Product;
 import com.vendingmachine.domain.TransactionSession;
-import com.vendingmachine.dto.ProductIdDTO;
+import com.vendingmachine.dto.ProductIdRequest;
 import com.vendingmachine.dto.PurchaseResult;
 import com.vendingmachine.service.ProductService;
 import com.vendingmachine.service.TransactionSessionService;
@@ -58,7 +58,7 @@ public class TransactionSessionController {
     }
     
     @PostMapping("/{sessionId}/purchase-product")
-    public ResponseEntity<ApiResponse<PurchaseResult>> purchaseProduct(@PathVariable Long sessionId, @RequestBody ProductIdDTO productIdDTO) {
+    public ResponseEntity<ApiResponse<PurchaseResult>> purchaseProduct(@PathVariable Long sessionId, @RequestBody ProductIdRequest productIdDTO) {
         try {
             Long productId = productIdDTO.getProductId();
             PurchaseResult result = productService.purchaseProduct(sessionId, productId);

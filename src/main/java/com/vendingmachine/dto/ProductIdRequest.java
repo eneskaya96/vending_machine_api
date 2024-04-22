@@ -1,6 +1,6 @@
 package com.vendingmachine.dto;
 
-public class ProductIdDTO {
+public class ProductIdRequest {
     private Long productId;
 
     // Getter and Setter
