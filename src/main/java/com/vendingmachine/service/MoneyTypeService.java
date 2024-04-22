@@ -30,4 +30,16 @@ public class MoneyTypeService {
     public void deleteMoneyType(Long id) {
         moneyTypeRepository.deleteById(id);
     }
+    
+    public MoneyType updateQuantity(Long moneyTypeId, int quantity) {
+        MoneyType moneyType = moneyTypeRepository.findById(moneyTypeId)
+            .orElseThrow(() -> new IllegalStateException("MoneyType not found with ID: " + moneyTypeId));
+
+        if (quantity < 0) {
+            throw new IllegalArgumentException("Quantity cannot be negative.");
+        }
+
+        moneyType.setQuantity(quantity);
+        return moneyTypeRepository.save(moneyType);
+    }
 }

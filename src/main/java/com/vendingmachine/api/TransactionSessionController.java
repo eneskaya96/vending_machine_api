@@ -67,4 +67,15 @@ public class TransactionSessionController {
             return ResponseEntity.badRequest().body(new ApiResponse<>(null, 400, e.getMessage(), false));
         }
     }
+    
+    @PostMapping("/{sessionId}/reset")
+    public ResponseEntity<String> resetSession(@PathVariable Long sessionId) {
+        try {
+            sessionService.resetSession(sessionId);
+            return ResponseEntity.ok("Session reset successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error resetting session: " + e.getMessage());
+        }
+    }
+
 }

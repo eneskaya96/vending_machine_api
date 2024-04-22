@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.vendingmachine.domain.MoneyType;
 import com.vendingmachine.domain.Product;
 import com.vendingmachine.domain.TransactionSession;
+import com.vendingmachine.dto.ProductUpdateRequest;
 import com.vendingmachine.dto.PurchaseResult;
 import com.vendingmachine.repository.MoneyTypeRepository;
 import com.vendingmachine.repository.ProductRepository;
@@ -35,6 +36,10 @@ public class ProductService {
 
     public List<Product> getAllProducts() {
         return repository.findAll();
+    }
+    
+    public Product addProduct(Product product) {
+        return repository.save(product); 
     }
     
     @Transactional
@@ -122,5 +127,20 @@ public class ProductService {
             }
         }
     }
+    
+    public Product updateProduct(Long productId, ProductUpdateRequest updateRequest) {
+        Product product = repository.findById(productId)
+            .orElseThrow(() -> new IllegalArgumentException("Product not found with ID: " + productId));
+
+        if (updateRequest.getQuantity() != null) {
+            product.setQuantity(updateRequest.getQuantity());
+        }
+        if (updateRequest.getPrice() != null) {
+            product.setPrice(updateRequest.getPrice());
+        }
+
+        return repository.save(product);
+    }
+
 
 }

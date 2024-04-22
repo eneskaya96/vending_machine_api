@@ -55,4 +55,15 @@ public class TransactionSessionService {
         Optional<TransactionSession> session = findById(sessionId);
         return session.map(TransactionSession::getTotalAmount).orElse(0);
     }
+    
+    public void resetSession(Long sessionId) {
+        TransactionSession session = sessionRepository.findById(sessionId)
+            .orElseThrow(() -> new IllegalStateException("Session not found with ID: " + sessionId));
+
+        // Assuming you want to reset values to some initial state
+        session.setTotalAmount(0);
+        session.setMoneyInserted(new HashMap<>());
+        sessionRepository.save(session);
+        
+    }
 }
