@@ -9,7 +9,7 @@ public class TemperatureService {
     private static final double DESIRED_TEMPERATURE = 5.0; 
     private double currentTemperature = 5.0; 
 
-    @Scheduled(fixedRate = 30000) 
+    @Scheduled(fixedRate = 30000) // 30 second
     public void checkAndAdjustTemperature() {
         double sensorTemperature = simulateSensorData();
 
