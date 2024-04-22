@@ -17,3 +17,7 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_ORG_API_KEY}}
           heroku_app_name: ${{secrets.HEROKU_APP_NAME_DEV}}
           heroku_email: ${{secrets.HEROKU_ORG_EMAIL}}
+	 env:
+	  JDBC_DATABASE_URL: ${{ secrets.JDBC_DATABASE_URL }}
+          JDBC_DATABASE_USERNAME: ${{ secrets.JDBC_DATABASE_USERNAME }}
+          JDBC_DATABASE_PASSWORD: ${{ secrets.JDBC_DATABASE_PASSWORD }}
