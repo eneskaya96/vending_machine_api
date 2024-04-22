@@ -25,7 +25,7 @@ public class SimpleTokenFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         String token = request.getHeader("Authorization");
 
-        if ("/products/add".equals(path) && AUTH_TOKEN.equals(token)) {
+        if (tokenIsRequired(path) && AUTH_TOKEN.equals(token)) {
             // Token validated, authenticate the user
             Authentication auth = new UsernamePasswordAuthenticationToken("user", null, AuthorityUtils.createAuthorityList("ROLE_USER"));
             SecurityContextHolder.getContext().setAuthentication(auth);
@@ -36,5 +36,12 @@ public class SimpleTokenFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+    
+    private boolean tokenIsRequired(String path) {
+        return "/products/add".equals(path) || 
+               path.matches("\\/transaction-sessions\\/[0-9]+\\/reset") ||
+               path.matches("\\/money-types\\/[0-9]+\\/update-quantity") ||
+               path.matches("\\/products\\/[0-9]+\\/update");
     }
 }

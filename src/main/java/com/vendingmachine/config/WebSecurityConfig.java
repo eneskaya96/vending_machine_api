@@ -25,6 +25,9 @@ public class WebSecurityConfig {
 		.cors().and()
         .authorizeHttpRequests((requests) -> requests
             .requestMatchers("/products/add").authenticated() 
+            .requestMatchers("/transaction-sessions/{sessionId}/reset").authenticated()
+            .requestMatchers("/products/{productId}/update").authenticated()
+            .requestMatchers("money-types/{moneyTypeId}/update-quantity").authenticated()
             .anyRequest().permitAll()
         )
         .csrf(csrf -> csrf.disable())
