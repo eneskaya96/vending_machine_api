@@ -60,7 +60,6 @@ public class TransactionSessionService {
         TransactionSession session = sessionRepository.findById(sessionId)
             .orElseThrow(() -> new IllegalStateException("Session not found with ID: " + sessionId));
 
-        // Assuming you want to reset values to some initial state
         session.setTotalAmount(0);
         session.setMoneyInserted(new HashMap<>());
         sessionRepository.save(session);

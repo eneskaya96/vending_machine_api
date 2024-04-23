@@ -22,17 +22,15 @@ import java.util.Optional;
 public class ProductService {
 
     private final ProductRepository repository;
+    private final TransactionSessionRepository sessionRepository;
+    private final MoneyTypeRepository moneyTypeRepository;
 
     @Autowired
-    private TransactionSessionRepository sessionRepository;
-
-    @Autowired
-    public ProductService(ProductRepository repository) {
+    public ProductService(ProductRepository repository, TransactionSessionRepository sessionRepository, MoneyTypeRepository moneyTypeRepository) {
         this.repository = repository;
+        this.sessionRepository = sessionRepository;
+        this.moneyTypeRepository = moneyTypeRepository;
     }
-    
-    @Autowired
-    private MoneyTypeRepository moneyTypeRepository;
 
     public List<Product> getAllProducts() {
         return repository.findAll();
